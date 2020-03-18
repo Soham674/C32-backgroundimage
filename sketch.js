@@ -9,9 +9,9 @@ var backgroundImg,platform;
 var bird, slingshot;
 
 var gameState = "onSling";
-
+var bg = "sprites/bg1.png";
 function preload() {
-    backgroundImg = loadImage("sprites/bg.png");
+    getbackgroundimage();
 }
 
 function setup(){
@@ -45,6 +45,7 @@ function setup(){
 }
 
 function draw(){
+    if(backgroundImg)
     background(backgroundImg);
     Engine.update(engine);
     //strokeWeight(4);
@@ -85,4 +86,18 @@ function keyPressed(){
     if(keyCode === 32){
        // slingshot.attach(bird.body);
     }
+}
+async function getbackgroundimage(){
+    var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Tokyo");
+    var responsejson = await response.json();
+    var daytime = responsejson.datetime;
+    var hour = daytime.slice(11,13);
+    if(hour>=06 && hour<=19){
+        bg = "sprites/bg1.png";
+    }
+    else{
+        bg = "sprites/bg2.jpg";
+    }
+    backgroundImg=loadImage(bg);
+    console.log();
 }
